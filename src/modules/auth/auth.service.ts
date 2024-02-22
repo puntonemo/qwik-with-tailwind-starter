@@ -12,6 +12,7 @@ export class AuthService {
   async signin(signInDto: SignInDto) {
     const payload = {
       email: signInDto.email,
+      roles: ['user'],
     };
 
     const token = this.jwtService.sign(payload);

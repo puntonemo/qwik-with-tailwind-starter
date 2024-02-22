@@ -6,17 +6,18 @@ import { Injectable } from '@nestjs/common';
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor() {
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        ExtractJwt.fromAuthHeaderAsBearerToken(),
+      ]),
       ignoreExpiration: false,
       secretOrKey: process.env.JWT_SECRET,
     });
   }
 
   async validate(payload: { id: string; email: string }) {
-    console.log(payload);
     //const user = this.userModel.findById(payload.id);
     //return user;
-    if (payload.email.endsWith('@test.com')) return true;
+    if (payload.email.endsWith('@test.com')) return payload;
     return undefined;
   }
 }
